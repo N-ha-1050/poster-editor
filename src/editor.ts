@@ -3,7 +3,7 @@ import { truncateWithEllipsis } from "./utils"
 import "ace-builds/src-noconflict/mode-markdown"
 import "ace-builds/src-noconflict/theme-github"
 import "ace-builds/src-noconflict/keybinding-vscode"
-import { getTitle } from "./markdown"
+import { getHtml } from "./markdown"
 
 export const editor = ace.edit("editor", {
   mode: "ace/mode/markdown",
@@ -104,9 +104,11 @@ editor.commands.addCommand({
     const blob = new Blob([content], { type: "text/markdown" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
-    const title = (await getTitle(content)) || "notitle"
+    const {
+      matter: { title },
+    } = await getHtml(content)
     a.href = url
-    a.download = `${title}.md`
+    a.download = `${title || "poster"}.md`
     a.click()
     URL.revokeObjectURL(url)
   },

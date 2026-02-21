@@ -607,17 +607,6 @@ function remarkDirectiveDiv() {
   }
 }
 
-const titleProcessor = remark()
-  .use(remarkFrontmatter)
-  .use(remarkHandlingYamlMatter)
-
-export async function getTitle(markdown: string) {
-  const file = await titleProcessor.process(markdown)
-  const matter: PosterFrontmatter = file.data.matter || {}
-  const title = matter?.title ? String(matter.title) : null
-  return title
-}
-
 const processor = remark()
   .use(remarkFrontmatter)
   .use(remarkHandlingYamlMatter)
@@ -679,5 +668,6 @@ const processor = remark()
 
 export async function getHtml(markdown: string) {
   const file = await processor.process(markdown)
-  return String(file)
+  const matter: PosterFrontmatter = file.data.matter || {}
+  return { html: String(file), matter }
 }

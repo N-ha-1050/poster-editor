@@ -1,5 +1,5 @@
 import { editor, setImageDragAndDrop } from "./editor"
-import { getHtml, getTitle } from "./markdown"
+import { getHtml } from "./markdown"
 import { debounce } from "./utils"
 
 const viewerIframe = document.getElementById("preview")
@@ -8,7 +8,8 @@ async function update() {
   if (!(viewerIframe instanceof HTMLIFrameElement)) return
 
   const value = editor.getValue()
-  viewerIframe.srcdoc = await getHtml(value)
+  const { html } = await getHtml(value)
+  viewerIframe.srcdoc = html
 }
 
 const debouncedUpdate = debounce(update, 700)
@@ -56,13 +57,15 @@ function setSaveButtons() {
 
   downloadButton.onclick = async () => {
     const value = editor.getValue()
-    const html = await getHtml(value)
-    const title = await getTitle(value)
+    const {
+      html,
+      matter: { title },
+    } = await getHtml(value)
     const blob = new Blob([html], { type: "text/html" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `${title}.html`
+    a.download = `${title || "poster"}.html`
     a.click()
     URL.revokeObjectURL(url)
   }
