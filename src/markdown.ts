@@ -21,6 +21,30 @@ type PosterStyleFrontmatter = {
   height?: string | null
   primaryColor?: string | null
   secondaryColor?: string | null
+  size?: string | null
+  titleFontSize?: string | null
+  authorFontSize?: string | null
+  affiliationFontSize?: string | null
+  sectionTitleFontSize?: string | null
+  subsectionTitleFontSize?: string | null
+  contentFontSize?: string | null
+  framePadding?: string | null
+  titlePadding?: string | null
+  authorAffiliationGap?: string | null
+  contentGap?: string | null
+  sectionTitlePadding?: string | null
+  sectionContentPadding?: string | null
+  titleContentGap?: string | null
+  listPadding?: string | null
+  numColumns?: number | null
+}
+
+const posterStyleSizes: Record<string, { width: string; height: string }> = {
+  a0: { width: "841mm", height: "1189mm" },
+  a1: { width: "594mm", height: "841mm" },
+  a2: { width: "420mm", height: "594mm" },
+  a3: { width: "297mm", height: "420mm" },
+  a4: { width: "210mm", height: "297mm" },
 }
 
 type PosterFrontmatter = {
@@ -37,16 +61,63 @@ const DEFAULT_THEME_VARS = {
   height: "1189mm",
   primaryColor: "#8fc231",
   secondaryColor: "#689f39",
+  titleFontSize: "96px",
+  authorFontSize: "54px",
+  affiliationFontSize: "54px",
+  sectionTitleFontSize: "64px",
+  subsectionTitleFontSize: "36px",
+  contentFontSize: "24px",
+  framePadding: "64px 96px",
+  titlePadding: "48px",
+  authorAffiliationGap: "24px",
+  contentGap: "64px",
+  sectionTitlePadding: "36px 48px",
+  sectionContentPadding: "24px 48px",
+  titleContentGap: "48px",
+  listPadding: "0 0 8px 0",
+  numColumns: 2,
 }
 
 function resolveThemeVars(frontmatter: PosterFrontmatter) {
   const style = frontmatter.style
-  return {
+  const theme = {
     width: style?.width ?? DEFAULT_THEME_VARS.width,
     height: style?.height ?? DEFAULT_THEME_VARS.height,
     primaryColor: style?.primaryColor ?? DEFAULT_THEME_VARS.primaryColor,
     secondaryColor: style?.secondaryColor ?? DEFAULT_THEME_VARS.secondaryColor,
+    titleFontSize: style?.titleFontSize ?? DEFAULT_THEME_VARS.titleFontSize,
+    authorFontSize: style?.authorFontSize ?? DEFAULT_THEME_VARS.authorFontSize,
+    affiliationFontSize:
+      style?.affiliationFontSize ?? DEFAULT_THEME_VARS.affiliationFontSize,
+    sectionTitleFontSize:
+      style?.sectionTitleFontSize ?? DEFAULT_THEME_VARS.sectionTitleFontSize,
+    subsectionTitleFontSize:
+      style?.subsectionTitleFontSize ??
+      DEFAULT_THEME_VARS.subsectionTitleFontSize,
+    contentFontSize:
+      style?.contentFontSize ?? DEFAULT_THEME_VARS.contentFontSize,
+    framePadding: style?.framePadding ?? DEFAULT_THEME_VARS.framePadding,
+    titlePadding: style?.titlePadding ?? DEFAULT_THEME_VARS.titlePadding,
+    authorAffiliationGap:
+      style?.authorAffiliationGap ?? DEFAULT_THEME_VARS.authorAffiliationGap,
+    contentGap: style?.contentGap ?? DEFAULT_THEME_VARS.contentGap,
+    sectionTitlePadding:
+      style?.sectionTitlePadding ?? DEFAULT_THEME_VARS.sectionTitlePadding,
+    sectionContentPadding:
+      style?.sectionContentPadding ?? DEFAULT_THEME_VARS.sectionContentPadding,
+    titleContentGap:
+      style?.titleContentGap ?? DEFAULT_THEME_VARS.titleContentGap,
+    listPadding: style?.listPadding ?? DEFAULT_THEME_VARS.listPadding,
+    numColumns: style?.numColumns ?? DEFAULT_THEME_VARS.numColumns,
   }
+  if (style?.size) {
+    const size = posterStyleSizes[style.size.toLowerCase()]
+    if (size) {
+      theme.width = size.width
+      theme.height = size.height
+    }
+  }
+  return theme
 }
 
 function buildPosterStyle(frontmatter: PosterFrontmatter) {
@@ -65,23 +136,23 @@ function buildPosterStyle(frontmatter: PosterFrontmatter) {
   --font-serif: "Noto Serif", "Noto Serif JP", ui-serif, serif;
   --font-mono: "Noto Mono", ui-monospace, monospace;
 
-  --title-font-size: 96px;
-  --author-font-size: 54px;
-  --affiliation-font-size: 54px;
-  --section-title-font-size: 64px;
-  --subsection-title-font-size: 36px;
-  --content-font-size: 24px;
+  --title-font-size: ${theme.titleFontSize};
+  --author-font-size: ${theme.authorFontSize};
+  --affiliation-font-size: ${theme.affiliationFontSize};
+  --section-title-font-size: ${theme.sectionTitleFontSize};
+  --subsection-title-font-size: ${theme.subsectionTitleFontSize};
+  --content-font-size: ${theme.contentFontSize};
 
-  --frame-padding: 64px 96px;
-  --title-padding: 48px;
-  --author-affiliation-gap: 24px;
-  --content-gap: 64px;
-  --section-title-padding: 36px 48px;
-  --section-content-padding: 24px 48px;
-  --title-content-gap: 48px;
-  --list-padding: 0 0 8px 0;
+  --frame-padding: ${theme.framePadding};
+  --title-padding: ${theme.titlePadding};
+  --author-affiliation-gap: ${theme.authorAffiliationGap};
+  --content-gap: ${theme.contentGap};
+  --section-title-padding: ${theme.sectionTitlePadding};
+  --section-content-padding: ${theme.sectionContentPadding};
+  --title-content-gap: ${theme.titleContentGap};
+  --list-padding: ${theme.listPadding};
 
-  --num-columns: 2;
+  --num-columns: ${theme.numColumns};
 }
 
 body {
