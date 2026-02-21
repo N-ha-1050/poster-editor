@@ -23,6 +23,12 @@ author: "N_ha"
 
    `npm run lefthook install`
 
+4. 開発サーバーの起動
+
+   `npm run dev`
+
+   ブラウザで <http://localhost:5173> を開いてください。
+
 ## (自分用)新規環境構築手順
 
 0. プロジェクトディレクトリの作成と移動、Git の初期化
