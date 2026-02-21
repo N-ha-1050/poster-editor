@@ -1,0 +1,82 @@
+:root {
+  --header-height: 72px;
+  --button-width: 128px;
+  --button-height: 32px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: var(--header-height);
+}
+
+header h1 {
+  margin: 0;
+  padding: calc(var(--header-height) / 8) 0;
+
+  font-size: calc(var(--header-height) / 2);
+  text-align: center;
+}
+
+div#editor {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+
+  width: 50vw;
+  height: calc(100vh - var(--header-height));
+}
+
+div#viewer {
+  position: absolute;
+  top: var(--header-height);
+  left: 50vw;
+
+  width: 50vw;
+  height: calc(100vh - var(--header-height));
+
+  overflow: hidden;
+}
+
+iframe#preview {
+  border: none;
+}
+
+button {
+  width: var(--button-width);
+  height: var(--button-height);
+
+  font-size: 16px;
+}
+
+button#zoom-in {
+  position: absolute;
+  top: calc(var(--header-height) + 16px);
+  left: calc(50vw + 16px);
+}
+
+button#zoom-out {
+  position: absolute;
+  top: calc(var(--header-height) + 16px);
+  left: calc(50vw + 16px + var(--button-width) + 8px);
+}
+
+button#print {
+  position: absolute;
+  top: calc(var(--header-height) + 16px);
+  left: calc(100vw - var(--button-width) - 16px);
+}
+
+button#download {
+  position: absolute;
+  top: calc(var(--header-height) + 16px);
+  left: calc(100vw - var(--button-width) - 16px - var(--button-width) - 8px);
+}

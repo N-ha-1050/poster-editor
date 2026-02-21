@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>poster-editor</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>Poster Editor</h1>
+    </header>
+    <div id="editor"></div>
+    <div id="viewer">
+      <iframe id="preview" title="viewer" loading="lazy"></iframe>
+    </div>
+    <button id="zoom-in" type="button">拡大</button>
+    <button id="zoom-out" type="button">縮小</button>
+    <button id="print" type="button">印刷</button>
+    <button id="download" type="button">HTML保存</button>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
