@@ -47,12 +47,11 @@ const posterStyleSizes: Record<string, { width: string; height: string }> = {
   a4: { width: "210mm", height: "297mm" },
 }
 
+// key: author-name, value: affiliation-names
+
 type PosterFrontmatter = {
   title?: string | null
-  author?: string | null
-  authors?: string[] | null
-  affiliation?: string | null
-  affiliations?: string[] | null
+  authors?: { [key: string]: string | string[] | null }[] | null
   style?: PosterStyleFrontmatter | null
 }
 
@@ -184,24 +183,25 @@ header#poster-header h1#poster-title {
   margin-bottom: var(--title-padding);
 }
 
-header#poster-header #poster-author {
+header#poster-header div#poster-author {
   display: flex;
   justify-content: center;
   gap: var(--author-affiliation-gap);
 }
 
-header#poster-header #poster-author p {
+header#poster-header div#poster-author p {
   margin: 0;
   font-size: var(--author-font-size);
 }
 
-header#poster-header #poster-affiliation {
+header#poster-header ol#poster-affiliation {
   display: flex;
   justify-content: center;
   gap: var(--author-affiliation-gap);
+  list-style-position: inside;
 }
 
-header#poster-header #poster-affiliation p {
+header#poster-header ol#poster-affiliation li {
   margin: 0;
   font-size: var(--affiliation-font-size);
 }
@@ -298,6 +298,54 @@ export default function remarkHandlingYamlMatter() {
   }
 }
 
+function resolveAuthorsFromFrontmatter(
+  frontmatterAuthors: PosterFrontmatter["authors"],
+) {
+  if (!frontmatterAuthors) {
+    return { authors: [], affiliations: [] }
+  }
+
+  const affiliationMap: Map<string, number> = new Map()
+  const affiliations: { name: string; number: number }[] = [] // 1-origin でソートされた所属リスト
+
+  const authors = frontmatterAuthors.map((tmp) => {
+    console.log("tmp:", tmp)
+    const [frontmatterAuthor, frontmatterAffiliation] = Object.entries(tmp)[0]
+    const affiliationNames = (
+      Array.isArray(frontmatterAffiliation)
+        ? frontmatterAffiliation
+        : [frontmatterAffiliation]
+    )
+      .map((aff) => aff?.trim() ?? "")
+      .filter((aff) => aff.length > 0)
+    const authorName = frontmatterAuthor.trim()
+
+    const affiliationNumbers: number[] = []
+    affiliationNames.forEach((affiliationName) => {
+      if (!affiliationMap.has(affiliationName)) {
+        const affiliationNumber = affiliationMap.size + 1
+        affiliationMap.set(affiliationName, affiliationNumber)
+        affiliations.push({
+          name: affiliationName,
+          number: affiliationNumber,
+        })
+      }
+      const affiliationNumber = affiliationMap.get(affiliationName)
+      if (!affiliationNumber) {
+        // This code block should never be reached!
+        console.warn(
+          `Affiliation "${affiliationName}" not found in affiliationMap.`,
+        )
+        return
+      }
+      affiliationNumbers.push(affiliationNumber)
+    })
+    return { name: authorName, numbers: affiliationNumbers }
+  })
+
+  return { authors, affiliations }
+}
+
 function rehypeWrapMainWithHeader() {
   return (tree: Node, file: VFile) => {
     const matter: PosterFrontmatter = file.data.matter || {}
@@ -314,12 +362,9 @@ function rehypeWrapMainWithHeader() {
             ],
       )
 
-    const authors = (matter.author ? [matter.author] : []).concat(
-      matter.authors ?? [],
+    const { authors, affiliations } = resolveAuthorsFromFrontmatter(
+      matter.authors,
     )
-    const affiliations = (
-      matter.affiliation ? [matter.affiliation] : []
-    ).concat(matter.affiliations ?? [])
 
     if (!("children" in tree) || !Array.isArray(tree.children)) {
       return
@@ -360,17 +405,35 @@ function rehypeWrapMainWithHeader() {
           children: authors.map((author) => ({
             type: "element",
             tagName: "p",
-            children: [{ type: "text", value: author }],
+            children: [
+              { type: "text", value: author.name },
+              ...(author.numbers.length > 0
+                ? [
+                    {
+                      type: "element",
+                      tagName: "sup",
+                      children: [
+                        { type: "text", value: author.numbers.join(",") },
+                      ],
+                    },
+                  ]
+                : []),
+            ],
           })),
         },
         {
           type: "element",
-          tagName: "div",
+          tagName: "ol",
           properties: { id: "poster-affiliation" },
           children: affiliations.map((affiliation) => ({
             type: "element",
-            tagName: "p",
-            children: [{ type: "text", value: affiliation }],
+            tagName: "li",
+            children: [
+              {
+                type: "text",
+                value: `${affiliation.name}`,
+              },
+            ],
           })),
         },
       ],
