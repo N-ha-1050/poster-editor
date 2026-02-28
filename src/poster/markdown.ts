@@ -15,332 +15,81 @@ import type { Data, Node } from "unist"
 import { visit } from "unist-util-visit"
 import type { VFile } from "vfile"
 import { matter } from "vfile-matter"
+import { buildPosterStyle, type PosterFrontmatterStyle } from "./style"
 
-type PosterStyleFrontmatter = {
-  width?: string | null
-  height?: string | null
-  primaryColor?: string | null
-  secondaryColor?: string | null
-  size?: string | null
-  titleFontSize?: string | null
-  authorFontSize?: string | null
-  affiliationFontSize?: string | null
-  sectionTitleFontSize?: string | null
-  subsectionTitleFontSize?: string | null
-  contentFontSize?: string | null
-  framePadding?: string | null
-  titlePadding?: string | null
-  authorAffiliationGap?: string | null
-  contentGap?: string | null
-  sectionTitlePadding?: string | null
-  sectionContentPadding?: string | null
-  titleContentGap?: string | null
-  listPadding?: string | null
-  numColumns?: number | null
-}
-
-const posterStyleSizes: Record<string, { width: string; height: string }> = {
-  a0: { width: "841mm", height: "1189mm" },
-  a1: { width: "594mm", height: "841mm" },
-  a2: { width: "420mm", height: "594mm" },
-  a3: { width: "297mm", height: "420mm" },
-  a4: { width: "210mm", height: "297mm" },
-}
-
-// key: author-name, value: affiliation-names
+type PosterFrontmatterAuthor =
+  | { [key: string]: string | string[] | null }
+  | string
+type PosterFrontmatterAuthors = PosterFrontmatterAuthor[]
 
 type PosterFrontmatter = {
   title?: string | null
-  authors?: { [key: string]: string | string[] | null }[] | null
-  style?: PosterStyleFrontmatter | null
-}
-
-const DEFAULT_THEME_VARS = {
-  width: "841mm",
-  height: "1189mm",
-  primaryColor: "#8fc231",
-  secondaryColor: "#689f39",
-  titleFontSize: "96px",
-  authorFontSize: "54px",
-  affiliationFontSize: "54px",
-  sectionTitleFontSize: "64px",
-  subsectionTitleFontSize: "36px",
-  contentFontSize: "24px",
-  framePadding: "64px 96px",
-  titlePadding: "48px",
-  authorAffiliationGap: "24px",
-  contentGap: "64px",
-  sectionTitlePadding: "36px 48px",
-  sectionContentPadding: "24px 48px",
-  titleContentGap: "48px",
-  listPadding: "0 0 8px 0",
-  numColumns: 2,
-}
-
-function resolveThemeVars(frontmatter: PosterFrontmatter) {
-  const style = frontmatter.style
-  const theme = {
-    width: style?.width ?? DEFAULT_THEME_VARS.width,
-    height: style?.height ?? DEFAULT_THEME_VARS.height,
-    primaryColor: style?.primaryColor ?? DEFAULT_THEME_VARS.primaryColor,
-    secondaryColor: style?.secondaryColor ?? DEFAULT_THEME_VARS.secondaryColor,
-    titleFontSize: style?.titleFontSize ?? DEFAULT_THEME_VARS.titleFontSize,
-    authorFontSize: style?.authorFontSize ?? DEFAULT_THEME_VARS.authorFontSize,
-    affiliationFontSize:
-      style?.affiliationFontSize ?? DEFAULT_THEME_VARS.affiliationFontSize,
-    sectionTitleFontSize:
-      style?.sectionTitleFontSize ?? DEFAULT_THEME_VARS.sectionTitleFontSize,
-    subsectionTitleFontSize:
-      style?.subsectionTitleFontSize ??
-      DEFAULT_THEME_VARS.subsectionTitleFontSize,
-    contentFontSize:
-      style?.contentFontSize ?? DEFAULT_THEME_VARS.contentFontSize,
-    framePadding: style?.framePadding ?? DEFAULT_THEME_VARS.framePadding,
-    titlePadding: style?.titlePadding ?? DEFAULT_THEME_VARS.titlePadding,
-    authorAffiliationGap:
-      style?.authorAffiliationGap ?? DEFAULT_THEME_VARS.authorAffiliationGap,
-    contentGap: style?.contentGap ?? DEFAULT_THEME_VARS.contentGap,
-    sectionTitlePadding:
-      style?.sectionTitlePadding ?? DEFAULT_THEME_VARS.sectionTitlePadding,
-    sectionContentPadding:
-      style?.sectionContentPadding ?? DEFAULT_THEME_VARS.sectionContentPadding,
-    titleContentGap:
-      style?.titleContentGap ?? DEFAULT_THEME_VARS.titleContentGap,
-    listPadding: style?.listPadding ?? DEFAULT_THEME_VARS.listPadding,
-    numColumns: style?.numColumns ?? DEFAULT_THEME_VARS.numColumns,
-  }
-  if (style?.size) {
-    const size = posterStyleSizes[style.size.toLowerCase()]
-    if (size) {
-      theme.width = size.width
-      theme.height = size.height
-    }
-  }
-  return theme
-}
-
-function buildPosterStyle(frontmatter: PosterFrontmatter) {
-  const theme = resolveThemeVars(frontmatter)
-  return `:root {
-  /* Size */
-  --width: ${theme.width};
-  --height: ${theme.height};
-
-  /* Color */
-  --primary-color: ${theme.primaryColor};
-  --secondary-color: ${theme.secondaryColor};
-
-  /* Fonts */
-  --font-sans: "Noto Sans", "Noto Sans JP", "Noto Sans Emoji", "Noto Sans Math", ui-sans-serif, sans-serif;
-  --font-serif: "Noto Serif", "Noto Serif JP", ui-serif, serif;
-  --font-mono: "Noto Mono", ui-monospace, monospace;
-
-  --title-font-size: ${theme.titleFontSize};
-  --author-font-size: ${theme.authorFontSize};
-  --affiliation-font-size: ${theme.affiliationFontSize};
-  --section-title-font-size: ${theme.sectionTitleFontSize};
-  --subsection-title-font-size: ${theme.subsectionTitleFontSize};
-  --content-font-size: ${theme.contentFontSize};
-
-  --frame-padding: ${theme.framePadding};
-  --title-padding: ${theme.titlePadding};
-  --author-affiliation-gap: ${theme.authorAffiliationGap};
-  --content-gap: ${theme.contentGap};
-  --section-title-padding: ${theme.sectionTitlePadding};
-  --section-content-padding: ${theme.sectionContentPadding};
-  --title-content-gap: ${theme.titleContentGap};
-  --list-padding: ${theme.listPadding};
-
-  --num-columns: ${theme.numColumns};
-}
-
-body {
-  font-family: var(--font-sans);
-
-  width: var(--width);
-  height: var(--height);
-
-  margin: 0;
-  padding: var(--frame-padding);
-  box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-  gap: var(--title-content-gap);
-}
-
-header#poster-header {
-  background-color: var(--primary-color);
-  color: white;
-  padding: var(--title-padding);
-  flex: 0 0 auto;
-}
-
-header#poster-header h1#poster-title {
-  text-align: center;
-  font-size: var(--title-font-size);
-  margin: 0;
-  margin-bottom: var(--title-padding);
-}
-
-header#poster-header div#poster-author {
-  display: flex;
-  justify-content: center;
-  gap: var(--author-affiliation-gap);
-}
-
-header#poster-header div#poster-author p {
-  margin: 0;
-  font-size: var(--author-font-size);
-}
-
-header#poster-header ol#poster-affiliation {
-  display: flex;
-  justify-content: center;
-  gap: var(--author-affiliation-gap);
-  list-style-position: inside;
-}
-
-header#poster-header ol#poster-affiliation li {
-  margin: 0;
-  font-size: var(--affiliation-font-size);
-}
-
-main#poster-main {
-  flex: 1 1 auto;
-  min-height: 0;
-
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  gap: var(--content-gap);
-}
-
-main#poster-main .poster-section {
-  width: calc((100% - (var(--num-columns) - 1) * var(--content-gap)) / var(--num-columns));
-}
-
-main#poster-main .poster-section h2 {
-  color: white;
-  background-color: var(--primary-color);
-  padding: var(--section-title-padding);
-  font-size: var(--section-title-font-size);
-  margin: 0;
-}
-
-main#poster-main .poster-section .poster-content {
-  padding: var(--section-content-padding);
-}
-
-main#poster-main .poster-section .poster-content p {
-  margin: 0;
-  text-align: justify;
-  font-size: var(--content-font-size);
-}
-
-main#poster-main .poster-section .poster-content p strong {
-  color: var(--secondary-color);
-}
-
-main#poster-main .poster-section .poster-content h3 {
-  color: var(--secondary-color);
-  font-size: var(--subsection-title-font-size);
-  font-weight:bold;
-}
-
-main#poster-main .poster-section .poster-content > h3:first-child {
-  margin-top: 0;
-}
-
-main#poster-main .poster-section .poster-content table {
-  width: 100%;
-  margin: 24px 0;
-  border: 2px solid black;
-  border-width: 2px 0;
-  border-collapse: collapse;
-}
-
-main#poster-main .poster-section .poster-content table th {
-  border-bottom: 1px solid black;
-}
-
-main#poster-main .poster-section .poster-content table th,
-main#poster-main .poster-section .poster-content table td {
-  font-size: var(--content-font-size);
-  text-align: center;
-}
-
-main#poster-main .poster-section .poster-content li {
-  font-size: var(--content-font-size);
-  padding: var(--list-padding);
-}
-
-main#poster-main .poster-section .poster-content li::marker {
-  color: var(--secondary-color);
-}
-
-main#poster-main .poster-section .poster-content .poster-content-row {
-  display: flex;
-  gap: var(--content-gap);
-}
-
-main#poster-main .poster-section .poster-content .poster-content-column {
-  display: block;
-}`
+  author?: PosterFrontmatterAuthor | null
+  authors?: PosterFrontmatterAuthors | null
+  style?: PosterFrontmatterStyle | null
 }
 
 /**
  * Parse YAML frontmatter and expose it at `file.data.matter`.
  */
-export default function remarkHandlingYamlMatter() {
+function remarkHandlingYamlMatter() {
   return (_: Node, file: VFile) => {
     matter(file)
   }
 }
 
 function resolveAuthorsFromFrontmatter(
-  frontmatterAuthors: PosterFrontmatter["authors"],
+  frontmatterAuthors?: PosterFrontmatterAuthors | null,
 ) {
   if (!frontmatterAuthors) {
     return { authors: [], affiliations: [] }
   }
 
+  const authors: { name: string; affiliationNumbers: number[] }[] = []
   const affiliationMap: Map<string, number> = new Map()
-  const affiliations: { name: string; number: number }[] = [] // 1-origin でソートされた所属リスト
+  const affiliations: { name: string; number: number }[] = [] // 1-indexed sorted affiliation list
 
-  const authors = frontmatterAuthors.map((tmp) => {
-    console.log("tmp:", tmp)
-    const [frontmatterAuthor, frontmatterAffiliation] = Object.entries(tmp)[0]
-    const affiliationNames = (
-      Array.isArray(frontmatterAffiliation)
-        ? frontmatterAffiliation
-        : [frontmatterAffiliation]
-    )
-      .map((aff) => aff?.trim() ?? "")
-      .filter((aff) => aff.length > 0)
-    const authorName = frontmatterAuthor.trim()
+  frontmatterAuthors.forEach((authorsBlock) => {
+    Object.entries(
+      typeof authorsBlock === "string"
+        ? { [authorsBlock]: null }
+        : authorsBlock,
+    ).forEach(([frontmatterAuthor, frontmatterAffiliation]) => {
+      const affiliationNames = (
+        Array.isArray(frontmatterAffiliation)
+          ? frontmatterAffiliation
+          : [frontmatterAffiliation]
+      )
+        .filter((aff) => aff !== null)
+        .map((aff) => aff.trim())
+      const authorName = frontmatterAuthor.trim()
 
-    const affiliationNumbers: number[] = []
-    affiliationNames.forEach((affiliationName) => {
-      if (!affiliationMap.has(affiliationName)) {
-        const affiliationNumber = affiliationMap.size + 1
-        affiliationMap.set(affiliationName, affiliationNumber)
-        affiliations.push({
-          name: affiliationName,
-          number: affiliationNumber,
+      const affiliationNumbers = affiliationNames
+        .map((affiliationName) => {
+          if (!affiliationMap.has(affiliationName)) {
+            const affiliationNumber = affiliationMap.size + 1
+            affiliationMap.set(affiliationName, affiliationNumber)
+            affiliations.push({
+              name: affiliationName,
+              number: affiliationNumber,
+            })
+          }
+          const affiliationNumber = affiliationMap.get(affiliationName)
+          if (!affiliationNumber) {
+            // This code block should never be reached!
+            console.warn(
+              `Affiliation "${affiliationName}" not found in affiliationMap.`,
+            )
+            return null
+          }
+          return affiliationNumber
         })
-      }
-      const affiliationNumber = affiliationMap.get(affiliationName)
-      if (!affiliationNumber) {
-        // This code block should never be reached!
-        console.warn(
-          `Affiliation "${affiliationName}" not found in affiliationMap.`,
-        )
-        return
-      }
-      affiliationNumbers.push(affiliationNumber)
+        .filter((num) => num !== null)
+      authors.push({
+        name: authorName,
+        affiliationNumbers,
+      })
     })
-    return { name: authorName, numbers: affiliationNumbers }
   })
 
   return { authors, affiliations }
@@ -363,7 +112,7 @@ function rehypeWrapMainWithHeader() {
       )
 
     const { authors, affiliations } = resolveAuthorsFromFrontmatter(
-      matter.authors,
+      (matter.author ? [matter.author] : []).concat(matter.authors ?? []),
     )
 
     if (!("children" in tree) || !Array.isArray(tree.children)) {
@@ -407,17 +156,11 @@ function rehypeWrapMainWithHeader() {
             tagName: "p",
             children: [
               { type: "text", value: author.name },
-              ...(author.numbers.length > 0
-                ? [
-                    {
-                      type: "element",
-                      tagName: "sup",
-                      children: [
-                        { type: "text", value: author.numbers.join(",") },
-                      ],
-                    },
-                  ]
-                : []),
+              ...author.affiliationNumbers.map((affiliationNumber) => ({
+                type: "element",
+                tagName: "sup",
+                children: [{ type: "text", value: `${affiliationNumber}` }],
+              })),
             ],
           })),
         },
@@ -485,7 +228,7 @@ function rehypeApplyStyleFromMatter() {
 
     const frontmatter: PosterFrontmatter = file.data.matter || {}
     styleNode.children = [
-      { type: "text", value: buildPosterStyle(frontmatter) },
+      { type: "text", value: buildPosterStyle(frontmatter.style) },
     ]
   }
 }
@@ -501,7 +244,7 @@ function rehypeWrapSections() {
 
     for (const node of tree.children) {
       if (node.type === "element" && node.tagName === "h2") {
-        // 新しいセクションの開始
+        // Start of a new section
         if (currentSection) {
           newChildren.push(currentSection)
         }
@@ -512,7 +255,7 @@ function rehypeWrapSections() {
           children: [node],
         }
       } else {
-        // セクション内のコンテンツ
+        // Content within section
         if (currentSection) {
           let contentDiv = currentSection.children.find(
             (child) =>
@@ -530,13 +273,13 @@ function rehypeWrapSections() {
           }
           contentDiv.children.push(node)
         } else {
-          // セクション外のコンテンツはそのまま
+          // Content outside sections remains as-is
           newChildren.push(node)
         }
       }
     }
 
-    // 最後のセクションを追加
+    // Add the last section
     if (currentSection) {
       newChildren.push(currentSection)
     }
@@ -625,9 +368,7 @@ function remarkImageAttributes() {
 
         if (widthMatch) {
           node.data.hProperties.width = widthMatch[1]
-          ;(node as Node & { alt?: string }).alt = alt
-            .replace(widthMatch[0], "")
-            .trim()
+          node.alt = alt.replace(widthMatch[0], "").trim()
         }
         if (heightMatch) {
           node.data.hProperties.height = heightMatch[1]
@@ -710,7 +451,7 @@ const processor = remark()
   .use(rehypeHighlight)
   .use(rehypeDocument, {
     language: "ja",
-    style: buildPosterStyle({}),
+    style: buildPosterStyle(),
     css: [
       "https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css",
       "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github.min.css",

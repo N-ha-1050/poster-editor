@@ -1,5 +1,5 @@
 import { editor, setImageDragAndDrop } from "./editor"
-import { getHtml } from "./markdown"
+import { getHtml } from "./poster/markdown"
 import { debounce } from "./utils"
 
 const viewerIframe = document.getElementById("preview")
