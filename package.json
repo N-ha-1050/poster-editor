@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@microflash/rehype-figure": "^2.1.4",
+    "@panzoom/panzoom": "^4.6.1",
     "@types/unist": "^3.0.3",
     "ace-builds": "^1.43.6",
     "rehype-document": "^7.0.3",

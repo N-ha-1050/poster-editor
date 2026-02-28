@@ -3,7 +3,7 @@ import { truncateWithEllipsis } from "./utils"
 import "ace-builds/src-noconflict/mode-markdown"
 import "ace-builds/src-noconflict/theme-github"
 import "ace-builds/src-noconflict/keybinding-vscode"
-import { getHtml } from "./markdown"
+import { getHtml } from "./poster/markdown"
 
 export const editor = ace.edit("editor", {
   mode: "ace/mode/markdown",

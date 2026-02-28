@@ -33,6 +33,9 @@ div#editor {
 
   width: 50vw;
   height: calc(100vh - var(--header-height));
+
+  box-sizing: border-box;
+  border: 1px solid black;
 }
 
 div#viewer {
@@ -43,11 +46,22 @@ div#viewer {
   width: 50vw;
   height: calc(100vh - var(--header-height));
 
+  box-sizing: border-box;
+  border: 1px solid black;
+
   overflow: hidden;
 }
 
+div#preview-wrapper {
+  width: 100%; /* 初期描画用の値 (script で変更される) */
+  height: 100%; /* 初期描画用の値 (script で変更される) */
+}
+
 iframe#preview {
-  border: none;
+  width: 100%; /* 初期描画用の値 (script で変更される) */
+  height: 100%; /* 初期描画用の値 (script で変更される) */
+
+  pointer-events: none;
 }
 
 button {
@@ -55,18 +69,6 @@ button {
   height: var(--button-height);
 
   font-size: 16px;
-}
-
-button#zoom-in {
-  position: absolute;
-  top: calc(var(--header-height) + 16px);
-  left: calc(50vw + 16px);
-}
-
-button#zoom-out {
-  position: absolute;
-  top: calc(var(--header-height) + 16px);
-  left: calc(50vw + 16px + var(--button-width) + 8px);
 }
 
 button#print {
