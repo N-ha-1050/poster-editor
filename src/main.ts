@@ -2,14 +2,14 @@ import { editor, setImageDragAndDrop } from "./editor"
 import { getHtml } from "./poster/markdown"
 import { debounce } from "./utils"
 
-const viewerIframe = document.getElementById("preview")
+const previewIframe = document.getElementById("preview")
 
 async function update() {
-  if (!(viewerIframe instanceof HTMLIFrameElement)) return
+  if (!(previewIframe instanceof HTMLIFrameElement)) return
 
   const value = editor.getValue()
   const { html } = await getHtml(value)
-  viewerIframe.srcdoc = html
+  previewIframe.srcdoc = html
 }
 
 const debouncedUpdate = debounce(update, 700)
@@ -22,25 +22,25 @@ function setZoomButtons() {
   if (!(zoomInButton instanceof HTMLButtonElement)) return
   if (!(zoomOutButton instanceof HTMLButtonElement)) return
 
-  if (!(viewerIframe instanceof HTMLIFrameElement)) return
+  if (!(previewIframe instanceof HTMLIFrameElement)) return
 
   const applyZoom = (factor: number) => {
-    const currentTransform = viewerIframe.style.transform
+    const currentTransform = previewIframe.style.transform
     const match = currentTransform.match(/scale\(([\d.]+)\)/)
     const currentScale = match ? parseFloat(match[1]) : 1
     const newScale = currentScale * factor
-    viewerIframe.style.transform = `scale(${newScale})`
-    viewerIframe.style.width = `${100 / newScale}%`
-    viewerIframe.style.height = `${100 / newScale}%`
+    previewIframe.style.transform = `scale(${newScale})`
+    previewIframe.style.width = `${100 / newScale}%`
+    previewIframe.style.height = `${100 / newScale}%`
   }
 
   zoomInButton.onclick = () => applyZoom(1.2)
   zoomOutButton.onclick = () => applyZoom(1 / 1.2)
 
-  viewerIframe.style.transformOrigin = "top left"
-  viewerIframe.style.transform = "scale(1)"
-  viewerIframe.style.width = "100%"
-  viewerIframe.style.height = "100%"
+  previewIframe.style.transformOrigin = "top left"
+  previewIframe.style.transform = "scale(1)"
+  previewIframe.style.width = "100%"
+  previewIframe.style.height = "100%"
 }
 
 const printButton = document.getElementById("print")
@@ -51,8 +51,8 @@ function setSaveButtons() {
   if (!(downloadButton instanceof HTMLButtonElement)) return
 
   printButton.onclick = () => {
-    if (!(viewerIframe instanceof HTMLIFrameElement)) return
-    viewerIframe.contentWindow?.print()
+    if (!(previewIframe instanceof HTMLIFrameElement)) return
+    previewIframe.contentWindow?.print()
   }
 
   downloadButton.onclick = async () => {
