@@ -3,6 +3,10 @@ title: "README"
 author: "N_ha"
 ---
 
+## ポスターサンプルと使い方
+
+[poster-sample.md](https://poster.n-ha.jp/?sample) でサンプルのマークダウンをエディターで表示できます。
+
 ## 導入
 
 0. プロジェクトのクローンと移動
