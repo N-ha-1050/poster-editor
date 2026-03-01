@@ -1,5 +1,5 @@
 import ace, { type Editor } from "ace-builds"
-import { truncateWithEllipsis } from "./utils"
+import { downloadFile, truncateWithEllipsis } from "./utils"
 import "ace-builds/src-noconflict/mode-markdown"
 import "ace-builds/src-noconflict/theme-github"
 import "ace-builds/src-noconflict/keybinding-vscode"
@@ -101,16 +101,10 @@ editor.commands.addCommand({
   bindKey: { win: "Ctrl-Shift-S", mac: "Command-Shift-S" },
   exec: async (editor: Editor) => {
     const content = editor.getValue()
-    const blob = new Blob([content], { type: "text/markdown" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
     const {
       matter: { title },
     } = await getHtml(content)
-    a.href = url
-    a.download = `${title || "poster"}.md`
-    a.click()
-    URL.revokeObjectURL(url)
+    downloadFile(`${title || "poster"}.md`, content, "text/markdown")
   },
   readOnly: false,
 })
