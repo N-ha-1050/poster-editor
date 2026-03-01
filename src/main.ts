@@ -1,7 +1,7 @@
 import { editor, setImageDragAndDrop } from "./editor"
 import { setPanzoom } from "./panzoom"
 import { getHtml } from "./poster/markdown"
-import { debounce } from "./utils"
+import { debounce, downloadFile } from "./utils"
 
 const previewIframe = document.getElementById("preview")
 
@@ -15,6 +15,15 @@ async function update() {
 
 const debouncedUpdate = debounce(update, 700)
 editor.on("change", debouncedUpdate)
+
+const params = new URLSearchParams(window.location.search)
+const isSample = params.has("sample")
+
+if (isSample) {
+  const response = await fetch("sample.md")
+  const content = await response.text()
+  editor.setValue(content, -1)
+}
 
 const printButton = document.getElementById("print")
 const downloadButton = document.getElementById("download")
@@ -34,13 +43,7 @@ function setSaveButtons() {
       html,
       matter: { title },
     } = await getHtml(value)
-    const blob = new Blob([html], { type: "text/html" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `${title || "poster"}.html`
-    a.click()
-    URL.revokeObjectURL(url)
+    downloadFile(`${title || "poster"}.html`, html, "text/html")
   }
 }
 

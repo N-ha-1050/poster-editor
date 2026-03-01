@@ -23,9 +23,10 @@ export function setPanzoom() {
 
     if (!doc) return
 
-    // 1. iframe内部のスクロールバーを非表示にする
-    doc.documentElement.style.overflow = "hidden"
-    doc.body.style.overflow = "hidden"
+    // 1. 正確なサイズを測るため、一瞬だけ iframe を極小(0px)にする
+    // これにより「最低でも初期サイズ」というブラウザの制約を外します
+    previewIframe.style.width = "0px"
+    previewIframe.style.height = "0px"
 
     // 2. 中身のHTMLの実際の幅と高さを取得する
     const contentWidth = Math.max(

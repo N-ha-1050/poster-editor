@@ -166,6 +166,11 @@ export function buildPosterStyle(style?: PosterFrontmatterStyle | null) {
   --num-columns: ${theme.numColumns};
 }
 
+html {
+  width: var(--width);
+  height: var(--height);
+}
+
 body {
   font-family: var(--font-sans);
 
@@ -211,6 +216,8 @@ header#poster-header ol#poster-affiliation {
   justify-content: center;
   gap: var(--author-affiliation-gap);
   list-style-position: inside;
+  margin: 0;
+  padding: 0;
 }
 
 header#poster-header ol#poster-affiliation li {
@@ -279,7 +286,6 @@ main#poster-main .poster-section .poster-content table th {
 main#poster-main .poster-section .poster-content table th,
 main#poster-main .poster-section .poster-content table td {
   font-size: var(--content-font-size);
-  text-align: center;
 }
 
 main#poster-main .poster-section .poster-content li {
