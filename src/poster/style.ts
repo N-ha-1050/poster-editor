@@ -51,6 +51,7 @@ export type PosterFrontmatterStyle = {
   height?: string | null
   primaryColor?: string | null
   secondaryColor?: string | null
+  backgroundColor?: string | null
   size?: Size | null
   titleFontSize?: string | null
   authorFontSize?: string | null
@@ -74,6 +75,7 @@ const DEFAULT_THEME_VARS = {
   height: "1189mm",
   primaryColor: "#8fc231",
   secondaryColor: "#689f39",
+  backgroundColor: "white",
   titleFontSize: "96px",
   authorFontSize: "54px",
   affiliationFontSize: "54px",
@@ -97,6 +99,8 @@ function resolveThemeVars(style?: PosterFrontmatterStyle | null) {
     height: style?.height ?? DEFAULT_THEME_VARS.height,
     primaryColor: style?.primaryColor ?? DEFAULT_THEME_VARS.primaryColor,
     secondaryColor: style?.secondaryColor ?? DEFAULT_THEME_VARS.secondaryColor,
+    backgroundColor:
+      style?.backgroundColor ?? DEFAULT_THEME_VARS.backgroundColor,
     titleFontSize: style?.titleFontSize ?? DEFAULT_THEME_VARS.titleFontSize,
     authorFontSize: style?.authorFontSize ?? DEFAULT_THEME_VARS.authorFontSize,
     affiliationFontSize:
@@ -141,6 +145,7 @@ export function buildPosterStyle(style?: PosterFrontmatterStyle | null) {
   /* Color */
   --primary-color: ${theme.primaryColor};
   --secondary-color: ${theme.secondaryColor};
+  --background-color: ${theme.backgroundColor};
 
   /* Fonts */
   --font-sans: "Noto Sans", "Noto Sans JP", "Noto Sans Emoji", "Noto Sans Math", ui-sans-serif, sans-serif;
@@ -172,6 +177,7 @@ html {
 }
 
 body {
+  background-color: var(--background-color);
   font-family: var(--font-sans);
 
   width: var(--width);

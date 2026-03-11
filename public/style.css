@@ -82,3 +82,19 @@ button#download {
   top: calc(var(--header-height) + 16px);
   left: calc(100vw - var(--button-width) - 16px - var(--button-width) - 8px);
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #000022;
+    color: white;
+  }
+
+  div#editor,
+  div#viewer {
+    border-color: white;
+  }
+
+  div#editor {
+    scrollbar-color: white #000022;
+  }
+}
