@@ -3,6 +3,7 @@ import { h } from "hastscript"
 import rehypeDocument from "rehype-document"
 import rehypeHighlight from "rehype-highlight"
 import rehypeKatex from "rehype-katex"
+import rehypeMermaid from "rehype-mermaid"
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize"
 import rehypeStringify from "rehype-stringify"
 import { remark } from "remark"
@@ -448,6 +449,7 @@ const processor = remark()
   })
   .use(rehypeFigure)
   .use(rehypeKatex)
+  .use(rehypeMermaid)
   .use(rehypeHighlight)
   .use(rehypeDocument, {
     language: "ja",
