@@ -2,6 +2,7 @@ import ace, { type Editor } from "ace-builds"
 import { downloadFile, truncateWithEllipsis } from "./utils"
 import "ace-builds/src-noconflict/mode-markdown"
 import "ace-builds/src-noconflict/theme-github"
+import "ace-builds/src-noconflict/theme-github_dark"
 import "ace-builds/src-noconflict/keybinding-vscode"
 import { getHtml } from "./poster/markdown"
 
@@ -10,7 +11,21 @@ export const editor = ace.edit("editor", {
   useSoftTabs: true,
 })
 
-editor.setTheme("ace/theme/github")
+const media = window.matchMedia("(prefers-color-scheme: dark)")
+
+function applyTheme() {
+  editor.setTheme(media.matches ? "ace/theme/github_dark" : "ace/theme/github")
+}
+
+media.addEventListener("change", applyTheme)
+applyTheme()
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    media.removeEventListener("change", applyTheme)
+  })
+}
+
 editor.setKeyboardHandler("ace/keyboard/vscode")
 
 editor.commands.addCommand({

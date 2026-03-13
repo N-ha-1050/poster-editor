@@ -10,6 +10,7 @@ style:
     size: "A0"
     primaryColor: "#8fc231"
     secondaryColor: "#689f39"
+    backgroundColor: "white"
     titleFontSize: "96px"
     authorFontSize: "54px"
     affiliationFontSize: "54px"
