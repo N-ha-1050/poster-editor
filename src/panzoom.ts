@@ -1,14 +1,10 @@
 import Panzoom from "@panzoom/panzoom"
 
-const previewWrapperDiv = document.getElementById("preview-wrapper")
-const viewerDiv = document.getElementById("viewer")
-const previewIframe = document.getElementById("preview")
-
-export function setPanzoom() {
-  if (!(previewWrapperDiv instanceof HTMLDivElement)) return
-  if (!(viewerDiv instanceof HTMLDivElement)) return
-  if (!(previewIframe instanceof HTMLIFrameElement)) return
-
+export function setPanzoom(
+  previewWrapperDiv: HTMLDivElement,
+  viewerDiv: HTMLDivElement,
+  previewIframe: HTMLIFrameElement,
+) {
   const panzoom = Panzoom(previewWrapperDiv, {
     canvas: true,
     maxScale: 32,
