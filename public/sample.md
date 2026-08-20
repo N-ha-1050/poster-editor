@@ -75,7 +75,7 @@ style:
 
 ### エディターでのショートカットキー
 
-基本的には [Ace](https://ace.c9.io/) の `VSCode` キーマップに従います。以下は、追加で設定されているショートカットキーです。
+基本的には [Monaco Editor](https://microsoft.github.io/monaco-editor/) のキーマップに従います。以下は、追加で設定されているショートカットキーです。
 
 ローカルストレージ
 
@@ -177,6 +177,8 @@ $f(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\righ
 ## 画像
 
 ![説明文](https://poster.n-ha.jp/favicon.svg){height=128px, width=128px}
+
+![絶対位置を指定した画像](https://poster.n-ha.jp/favicon.svg){right=128px, bottom=992px, height=128px, width=128px}
 
 ## 横並び
 

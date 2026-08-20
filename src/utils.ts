@@ -26,3 +26,17 @@ export function downloadFile(
   a.click()
   URL.revokeObjectURL(url)
 }
+
+/**
+ * タグ名とIDを指定して要素を取得し、型を自動推論する関数
+ */
+export function getTypedElementById<K extends keyof HTMLElementTagNameMap>(
+  tagName: K,
+  id: string,
+): HTMLElementTagNameMap[K] | null {
+  const element = document.getElementById(id)
+  if (!element) return null
+  return element.tagName.toLowerCase() === tagName
+    ? (element as HTMLElementTagNameMap[K])
+    : null
+}
