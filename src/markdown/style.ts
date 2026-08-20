@@ -126,7 +126,7 @@ function resolveThemeVars(style?: PosterFrontmatterStyle | null) {
     listPadding: style?.listPadding ?? DEFAULT_THEME_VARS.listPadding,
     numColumns: style?.numColumns ?? DEFAULT_THEME_VARS.numColumns,
   }
-  if (style?.size) {
+  if (style?.size && style.size in posterStyleSizes) {
     const size = style.size
     const sizeTheme = posterStyleSizes[size]
     theme.width = sizeTheme.width
@@ -190,6 +190,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--title-content-gap);
+
+  position: relative;
 }
 
 header#poster-header {
