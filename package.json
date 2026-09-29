@@ -3,10 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "bin": {
+    "poster": "./dist/cli.js"
+  },
+  "files": [
+    "dist/cli.js",
+    "readme.md"
+  ],
   "packageManager": "npm@11.11.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:cli": "vite build --config vite.cli.config.ts",
+    "prepare": "npm run build:cli",
+    "poster": "tsx src/cli/index.ts",
     "preview": "vite preview",
     "check": "biome check",
     "check:write": "biome check --write",
@@ -16,6 +26,7 @@
     "@biomejs/biome": "2.4.3",
     "@types/node": "^26.2.0",
     "lefthook": "^2.1.1",
+    "tsx": "^4.23.15",
     "typescript": "~5.9.3",
     "vite": "^7.3.1"
   },
@@ -23,6 +34,7 @@
     "@microflash/rehype-figure": "^2.1.4",
     "@panzoom/panzoom": "^4.6.1",
     "@types/unist": "^3.0.3",
+    "cac": "^7.0.0",
     "monaco-editor": "^0.56.0",
     "rehype-document": "^7.0.3",
     "rehype-highlight": "^7.0.2",
@@ -41,5 +53,9 @@
   },
   "overrides": {
     "dompurify": "3.4.14"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "lefthook": true
   }
 }

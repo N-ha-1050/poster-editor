@@ -5,13 +5,63 @@ author: "N_ha"
 
 ## ポスターサンプルと使い方
 
-[poster-sample.md](https://poster.n-ha.jp/?sample) でサンプルのマークダウンをエディターで表示できます。
+[poster-sample.md](https://poster.n-ha.jp/?sample) でサンプルのマークダウンをWebエディターで表示できます。
 
-## 導入
+### CLI ツールの使い方
+
+ローカルの Markdown ファイルからポスター HTML を生成したり、ブラウザでリアルタイムプレビューを行うことができます。
+
+#### クローン不要で直接実行する場合 (npx)
+
+プロジェクトをクローンせずに、GitHub から直接 CLI を実行できます。
+
+```bash
+# Markdown から HTML をビルド
+npx github:N-ha-1050/poster-editor build sample.md
+
+# プレビューサーバーを起動
+npx github:N-ha-1050/poster-editor preview sample.md
+```
+
+#### GitHub からインストールして利用する場合 (npm install)
+
+```bash
+# グローバルにインストールして poster コマンドとして利用
+npm install -g github:N-ha-1050/poster-editor
+poster build sample.md
+
+# 既存のプロジェクトに開発用依存関係として追加
+npm install -D github:N-ha-1050/poster-editor
+npx poster build sample.md
+```
+
+#### リポジトリ内から実行する場合
+
+```bash
+# ヘルプの表示
+npm run poster -- --help
+
+# 1. Markdown から HTML をビルド (デフォルトは <ファイル名>.html で出力)
+npm run poster -- build sample.md
+
+# 出力先パスを指定してビルド
+npm run poster -- build sample.md -o output.html
+
+# 2. ファイル変更を監視して自動で再ビルド (watch モード)
+npm run poster -- build sample.md -w
+
+# 3. ローカルプレビューサーバーを起動 (保存時の自動リロード & ローカル画像表示に対応)
+npm run poster -- preview sample.md
+
+# ポート番号を指定してプレビュー
+npm run poster -- preview sample.md -p 8080
+```
+
+## 開発者向け導入方法
 
 0. プロジェクトのクローンと移動
 
-   `git clone https://github.com/N-ha/poster-editor.git && cd poster-editor`
+   `git clone https://github.com/N-ha-1050/poster-editor.git && cd poster-editor`
 
 1. Node.js のインストール
 
@@ -32,77 +82,3 @@ author: "N_ha"
    `npm run dev`
 
    ブラウザで <http://localhost:5173> を開いてください。
-
-## (自分用)新規環境構築手順
-
-0. プロジェクトディレクトリの作成と移動、Git の初期化
-
-   `mkdir poster-editor && cd poster-editor && git init`
-
-1. Node.js のインストール
-
-   先述
-
-2. vite プロジェクトの作成
-
-   `npm create vite@latest .`
-
-   選択はデフォルトのままで問題ありません。
-
-   - `Select a framework:` で `vanilla` を選択
-   - `Select a variant:` で `TypeScript` を選択
-   - `Install with npm and start now?` で `Yes` を選択
-  
-3. Biome のインストール
-
-   `npm install -D -E @biomejs/biome`
-
-4. Biome の初期化
-
-   `biome init`
-
-5. Lefthook のインストール
-
-   `npm install lefthook --save-dev`
-
-6. Biome の設定
-
-   - VSCode の Biome 拡張機能をインストール
-
-     <https://biomejs.dev/ja/reference/vscode/>
-
-     `.vscode/settings.json` を作成して以下の内容を追加
-
-     ```json
-     {
-       "editor.defaultFormatter": "biomejs.biome",
-       "biome.enabled": true,
-       "editor.formatOnSave": true,
-       "editor.codeActionsOnSave": {
-         "source.fixAll.biome": "explicit",
-         "source.organizeImports.biome": "explicit"
-       }
-     }
-     ```
-
-   - `package.json` の `scripts` に biome のコマンドを追加
-
-   - `biome.json` を編集
-
-   - 継続的インテグレーションの設定
-
-     <https://biomejs.dev/ja/recipes/continuous-integration/>
-
-     `.github/workflows/pull_request.yml` を作成
-
-   - git hooks の設定
-
-     <https://biomejs.dev/ja/recipes/git-hooks/>
-
-     `lefthook.yml` を作成して `npm run lefthook install` を実行
-
-7. GitHub Pages へのデプロイ設定
-
-   <https://ja.vite.dev/guide/static-deploy>
-
-   `vite.config.ts` と `.github/workflows/deploy.yml` を作成
