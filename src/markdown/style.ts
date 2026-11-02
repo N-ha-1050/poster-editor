@@ -265,7 +265,7 @@ main#poster-main .poster-section .poster-content p {
   font-size: var(--content-font-size);
 }
 
-main#poster-main .poster-section .poster-content p strong {
+main#poster-main .poster-section .poster-content strong {
   color: var(--secondary-color);
 }
 
