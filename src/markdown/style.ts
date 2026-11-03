@@ -312,5 +312,9 @@ main#poster-main .poster-section .poster-content .poster-content-row {
 
 main#poster-main .poster-section .poster-content .poster-content-column {
   display: block;
+}
+
+main#poster-main .poster-section .poster-content figure figcaption {
+  font-size: var(--content-font-size);
 }`
 }
