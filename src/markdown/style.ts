@@ -273,6 +273,7 @@ main#poster-main .poster-section .poster-content h3 {
   color: var(--secondary-color);
   font-size: var(--subsection-title-font-size);
   font-weight: bold;
+  margin-bottom: 6pt;
 }
 
 main#poster-main .poster-section .poster-content > h3:first-child {
