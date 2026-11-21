@@ -70,6 +70,7 @@ export type PosterFrontmatterStyle = {
   paddingSectionTitle?: string | null
   paddingSectionContent?: string | null
   paddingList?: string | null
+  marginSubsectionTitle?: string | null
   gapAuthorAffiliation?: string | null
   gapContent?: string | null
   gapTitleContent?: string | null
@@ -127,6 +128,7 @@ const DEFAULT_THEME_VARS = {
   paddingSectionTitle: "36px 48px",
   paddingSectionContent: "24px 48px",
   paddingList: "0 0 8px 0",
+  marginSubsectionTitle: "36px 0",
   gapAuthorAffiliation: "24px",
   gapContent: "64px",
   gapTitleContent: "48px",
@@ -222,6 +224,8 @@ function resolveThemeVars(style?: PosterFrontmatterStyle | null) {
       // deprecated
       style?.listPadding ??
       DEFAULT_THEME_VARS.paddingList,
+    marginSubsectionTitle:
+      style?.marginSubsectionTitle ?? DEFAULT_THEME_VARS.marginSubsectionTitle,
     gapAuthorAffiliation:
       style?.gapAuthorAffiliation ??
       // deprecated
@@ -295,6 +299,7 @@ export function buildPosterStyle(style?: PosterFrontmatterStyle | null) {
   --padding-section-title: ${theme.paddingSectionTitle};
   --padding-section-content: ${theme.paddingSectionContent};
   --padding-list: ${theme.paddingList};
+  --margin-subsection-title: ${theme.marginSubsectionTitle};
   --gap-author-affiliation: ${theme.gapAuthorAffiliation};
   --gap-content: ${theme.gapContent};
   --gap-title-content: ${theme.gapTitleContent};
@@ -408,6 +413,7 @@ main#poster-main .poster-section .poster-content h3 {
   color: var(--color-key-primary);
   font-size: var(--font-size-subsection-title);
   font-weight: bold;
+  margin: var(--margin-subsection-title);
 }
 
 main#poster-main .poster-section .poster-content > h3:first-child {
