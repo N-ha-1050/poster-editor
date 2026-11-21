@@ -30,6 +30,7 @@ style:
   paddingSectionTitle: "36px 48px"
   paddingSectionContent: "24px 48px"
   paddingList: "0 0 8px 0"
+  marginSubsectionTitle: "36px 0"
   gapAuthorAffiliation: "24px"
   gapContent: "64px"
   gapTitleContent: "48px"
@@ -68,7 +69,7 @@ style:
   に対応しています。
   
   `size` の代わりに `sizeWidth` と `sizeHeight` を指定することもできます。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。重複して指定された場合は `size` が優先されます。
-- `color*`, `fontSize*`, `padding*`, `gap*` は、それぞれ色、フォントサイズ、余白、要素間の隙間を指定します。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。
+- `color*`, `fontSize*`, `padding*`, `margin*`, `gap*` は、それぞれ色、フォントサイズ、内側余白、外側余白、要素間の隙間を指定します。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。
   - 色の指定について WCAG 2.1 AA に準拠するため、以下の組み合わせはコントラスト比が 4.5:1 以上になるように設定することを推奨します。
     - `colorCommonBackground` と `colorCommonText`
     - `colorCommonBackground` と `colorKeyPrimary`
