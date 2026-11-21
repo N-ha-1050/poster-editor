@@ -22,6 +22,7 @@ style:
   fontSizeSectionTitle: "64px"
   fontSizeSubsectionTitle: "36px"
   fontSizeContent: "24px"
+  fontSizeCaption: "16px"
 
   # spacing
   paddingFrame: "64px 96px"
@@ -92,19 +93,11 @@ style:
 
 基本的には [Monaco Editor](https://microsoft.github.io/monaco-editor/) のキーマップに従います。以下は、追加で設定されているショートカットキーです。
 
-ローカルストレージ
-
 - `Ctrl + S` (`Cmd + S`): ローカルストレージに内容を保存します。
 - `Ctrl + O` (`Cmd + O`): ローカルストレージから内容を読み込みます。
 - `Ctrl + E` (`Cmd + E`): ローカルストレージの内容を削除します。
-
-マークダウンファイル保存
-
 - `Ctrl + Shift + S` (`Cmd + Shift + S`): マークダウンファイルを保存します。
 - `Ctrl + Shift + O` (`Cmd + Shift + O`): マークダウンファイルを読み込みます。
-
-エディター
-
 - `Ctrl + M` (`Cmd + M`): エディターの内容を削除します。
 
 ---

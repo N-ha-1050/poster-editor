@@ -62,6 +62,7 @@ export type PosterFrontmatterStyle = {
   fontSizeSectionTitle?: string | null
   fontSizeSubsectionTitle?: string | null
   fontSizeContent?: string | null
+  fontSizeCaption?: string | null
 
   // spacing
   paddingFrame?: string | null
@@ -118,6 +119,7 @@ const DEFAULT_THEME_VARS = {
   fontSizeSectionTitle: "64px",
   fontSizeSubsectionTitle: "36px",
   fontSizeContent: "24px",
+  fontSizeCaption: "16px",
 
   // spacing
   paddingFrame: "64px 96px",
@@ -191,6 +193,8 @@ function resolveThemeVars(style?: PosterFrontmatterStyle | null) {
       // deprecated
       style?.contentFontSize ??
       DEFAULT_THEME_VARS.fontSizeContent,
+    fontSizeCaption:
+      style?.fontSizeCaption ?? DEFAULT_THEME_VARS.fontSizeCaption,
 
     // spacing
     paddingFrame:
@@ -283,6 +287,7 @@ export function buildPosterStyle(style?: PosterFrontmatterStyle | null) {
   --font-size-section-title: ${theme.fontSizeSectionTitle};
   --font-size-subsection-title: ${theme.fontSizeSubsectionTitle};
   --font-size-content: ${theme.fontSizeContent};
+  --font-size-caption: ${theme.fontSizeCaption};
 
   /* Spacing */
   --padding-frame: ${theme.paddingFrame};
@@ -433,6 +438,10 @@ main#poster-main .poster-section .poster-content li {
 
 main#poster-main .poster-section .poster-content li::marker {
   color: var(--color-key-primary);
+}
+
+main#poster-main .poster-section .poster-content figure figcaption {
+  font-size: var(--font-size-caption);
 }
 
 main#poster-main .poster-section .poster-content .poster-content-row {
