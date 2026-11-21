@@ -52,9 +52,7 @@ style:
 
 ### Authors
 
-著者をマップ形式で指定します。キーが著者名の文字列、値が所属の文字列かその配列、または、 `null` になります。 `null` や空文字列の場合は所属なしとして扱われます。同一の所属の著者が複数いる場合は、所属を同じ値にすることでまとめて表示されます。
-
-一名のみの場合は `author` を使って `author: 著者名` とすることができます。
+著者をマップ形式で指定します。キーが著者名の文字列、値が所属の文字列かその配列、または、 `null` になります。 `null` や空文字列の場合は所属なしとして扱われます。同一の所属の著者が複数いる場合は、所属を同じ値にすることでまとめて表示されます。一名のみの場合は `author` を使って `author: 著者名` とすることができます。
 
 ### Style
 
@@ -141,12 +139,7 @@ style:
 コードブロック
 
 ```python
-def main():
-    print("Hello, World!")
-
-
-if __name__ == "__main__":
-    main()
+print("Hello, World!")
 ```
 
 `print("Hello, World!")` はインラインコードです。
@@ -186,7 +179,7 @@ $f(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\righ
 
 ![説明文](https://poster.n-ha.jp/favicon.svg){height=64px, width=64px}
 
-![絶対位置を指定した画像](https://poster.n-ha.jp/favicon.svg){right=128px, bottom=864px, height=128px, width=128px}
+![絶対位置を指定した画像](https://poster.n-ha.jp/favicon.svg){right=128px, bottom=960px, height=128px, width=128px}
 
 ## 横並びと小さい文字
 
