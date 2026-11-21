@@ -283,9 +283,8 @@ export function buildPosterStyle(style?: PosterFrontmatterStyle | null) {
   --color-key-primary: ${theme.colorKeyPrimary};
 
   /* Fonts */
-  --font-sans: "Noto Sans", "Noto Sans JP", "Noto Sans Emoji", "Noto Sans Math", ui-sans-serif, sans-serif;
-  --font-serif: "Noto Serif", "Noto Serif JP", ui-serif, serif;
-  --font-mono: "Noto Mono", ui-monospace, monospace;
+  --font-sans: "Noto Sans", "Noto Sans JP", "Noto Color Emoji", "Noto Sans Math", ui-sans-serif, sans-serif;
+  --font-mono: "Noto Sans Mono", "Noto Sans JP", ui-monospace, monospace;
 
   /* Font size */
   --font-size-title: ${theme.fontSizeTitle};
@@ -336,6 +335,13 @@ body {
   gap: var(--gap-title-content);
 
   position: relative;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
 }
 
 header#poster-header {
