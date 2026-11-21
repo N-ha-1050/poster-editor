@@ -444,6 +444,20 @@ main#poster-main .poster-section .poster-content li::marker {
   color: var(--color-key-primary);
 }
 
+main#poster-main .poster-section .poster-content blockquote {
+  margin: 24px 0;
+  border-left: 8px solid var(--color-common-border);
+  padding: 8px 16px 8px 24px;
+}
+
+main#poster-main .poster-section .poster-content blockquote > :first-child {
+  margin-top: 0;
+}
+
+main#poster-main .poster-section .poster-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
 main#poster-main .poster-section .poster-content figure figcaption {
   font-size: var(--font-size-caption);
 }
