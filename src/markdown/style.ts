@@ -63,6 +63,7 @@ export type PosterFrontmatterStyle = {
   fontSizeSubsectionTitle?: string | null
   fontSizeContent?: string | null
   fontSizeCaption?: string | null
+  fontSizeSmall?: string | null
 
   // spacing
   paddingFrame?: string | null
@@ -121,6 +122,7 @@ const DEFAULT_THEME_VARS = {
   fontSizeSubsectionTitle: "36px",
   fontSizeContent: "24px",
   fontSizeCaption: "16px",
+  fontSizeSmall: "12px",
 
   // spacing
   paddingFrame: "64px 96px",
@@ -197,6 +199,7 @@ function resolveThemeVars(style?: PosterFrontmatterStyle | null) {
       DEFAULT_THEME_VARS.fontSizeContent,
     fontSizeCaption:
       style?.fontSizeCaption ?? DEFAULT_THEME_VARS.fontSizeCaption,
+    fontSizeSmall: style?.fontSizeSmall ?? DEFAULT_THEME_VARS.fontSizeSmall,
 
     // spacing
     paddingFrame:
@@ -292,6 +295,7 @@ export function buildPosterStyle(style?: PosterFrontmatterStyle | null) {
   --font-size-subsection-title: ${theme.fontSizeSubsectionTitle};
   --font-size-content: ${theme.fontSizeContent};
   --font-size-caption: ${theme.fontSizeCaption};
+  --font-size-small: ${theme.fontSizeSmall};
 
   /* Spacing */
   --padding-frame: ${theme.paddingFrame};
@@ -397,12 +401,12 @@ main#poster-main .poster-section h2 {
 
 main#poster-main .poster-section .poster-content {
   padding: var(--padding-section-content);
+  font-size: var(--font-size-content);
 }
 
 main#poster-main .poster-section .poster-content p {
   margin: 0;
   text-align: justify;
-  font-size: var(--font-size-content);
 }
 
 main#poster-main .poster-section .poster-content strong {
@@ -432,13 +436,7 @@ main#poster-main .poster-section .poster-content table th {
   border-bottom: 1px solid var(--color-common-border);
 }
 
-main#poster-main .poster-section .poster-content table th,
-main#poster-main .poster-section .poster-content table td {
-  font-size: var(--font-size-content);
-}
-
 main#poster-main .poster-section .poster-content li {
-  font-size: var(--font-size-content);
   padding: var(--padding-list);
 }
 
@@ -457,5 +455,9 @@ main#poster-main .poster-section .poster-content .poster-content-row {
 
 main#poster-main .poster-section .poster-content .poster-content-column {
   display: block;
+}
+
+main#poster-main .poster-section .poster-content .poster-content-small {
+  font-size: var(--font-size-small);
 }`
 }

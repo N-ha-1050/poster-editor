@@ -23,6 +23,7 @@ style:
   fontSizeSubsectionTitle: "36px"
   fontSizeContent: "24px"
   fontSizeCaption: "16px"
+  fontSizeSmall: "12px"
 
   # spacing
   paddingFrame: "64px 96px"
@@ -59,14 +60,12 @@ style:
 
 スタイルを `style` にマップ形式で指定します。上記フロントマターではすべてのプロパティのデフォルト値を指定しています。
 
-- `size` は、ポスターのサイズを指定します。
+- `size` は、ポスターのサイズを指定します。以下の値に対応しています。
 
   - ISO Aシリーズの `A0` ~ `A10`
   - ISO Bシリーズの `B0` ~ `B10`
   - JIS Bシリーズの `JIS-B0` ~ `JIS-B10`
   - 北米サイズの `letter` 、 `legal` および `ledger`
-
-  に対応しています。
   
   `size` の代わりに `sizeWidth` と `sizeHeight` を指定することもできます。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。重複して指定された場合は `size` が優先されます。
 - `color*`, `fontSize*`, `padding*`, `margin*`, `gap*` は、それぞれ色、フォントサイズ、内側余白、外側余白、要素間の隙間を指定します。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。
@@ -185,11 +184,11 @@ $f(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\righ
 
 ## 画像
 
-![説明文](https://poster.n-ha.jp/favicon.svg){height=128px, width=128px}
+![説明文](https://poster.n-ha.jp/favicon.svg){height=64px, width=64px}
 
-![絶対位置を指定した画像](https://poster.n-ha.jp/favicon.svg){right=128px, bottom=992px, height=128px, width=128px}
+![絶対位置を指定した画像](https://poster.n-ha.jp/favicon.svg){right=128px, bottom=864px, height=128px, width=128px}
 
-## 横並び
+## 横並びと小さい文字
 
 :::::row
 左の内容
@@ -208,4 +207,8 @@ $f(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\righ
 :::row
 ![左の画像](https://poster.n-ha.jp/favicon.svg){height=64px, width=64px}
 ![右の画像](https://poster.n-ha.jp/favicon.svg){height=64px, width=64px}
+:::
+
+:::small
+小さく表示されるテキストです。
 :::
