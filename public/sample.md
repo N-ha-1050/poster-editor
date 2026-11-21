@@ -7,25 +7,36 @@ authors:
         - "所属1"
         - "所属2"
 style:
-    size: "A0"
-    primaryColor: "#8fc231"
-    secondaryColor: "#689f39"
-    backgroundColor: "white"
-    titleFontSize: "96px"
-    authorFontSize: "54px"
-    affiliationFontSize: "54px"
-    sectionTitleFontSize: "64px"
-    subsectionTitleFontSize: "36px"
-    contentFontSize: "24px"
-    framePadding: "64px 96px"
-    titlePadding: "48px"
-    authorAffiliationGap: "24px"
-    contentGap: "64px"
-    sectionTitlePadding: "36px 48px"
-    sectionContentPadding: "24px 48px"
-    titleContentGap: "48px"
-    listPadding: "0 0 8px 0"
-    numColumns: 2
+  # color
+  colorCommonBackground: "white"
+  colorCommonText: "black"
+  colorCommonBorder: "black"
+  colorKeyBackground: "#8fc231"
+  colorOnKeyBackground: "white"
+  colorKeyPrimary: "#689f39"
+
+  # font-size
+  fontSizeTitle: "96px"
+  fontSizeAuthor: "54px"
+  fontSizeAffiliation: "54px"
+  fontSizeSectionTitle: "64px"
+  fontSizeSubsectionTitle: "36px"
+  fontSizeContent: "24px"
+
+  # spacing
+  paddingFrame: "64px 96px"
+  paddingTitle: "48px"
+  paddingSectionTitle: "36px 48px"
+  paddingSectionContent: "24px 48px"
+  paddingList: "0 0 8px 0"
+  gapAuthorAffiliation: "24px"
+  gapContent: "64px"
+  gapTitleContent: "48px"
+
+  # layout
+  sizeWidth: "841mm"
+  sizeHeight: "1189mm"
+  layoutColumns: 2
 ---
 
 ## フロントマター
@@ -55,9 +66,13 @@ style:
 
   に対応しています。
   
-  `size` の代わりに `width` と `height` を指定することもできます。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。重複して指定された場合は `size` が優先されます。
-- `*Color`, `*FontSize`, `*Padding`, `*Gap` は、それぞれ色、フォントサイズ、余白、要素間の隙間を指定します。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。
-- `numColumns` は、セクションの内容を横に並べる列数を指定します。
+  `size` の代わりに `sizeWidth` と `sizeHeight` を指定することもできます。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。重複して指定された場合は `size` が優先されます。
+- `color*`, `fontSize*`, `padding*`, `gap*` は、それぞれ色、フォントサイズ、余白、要素間の隙間を指定します。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。
+  - 色の指定について WCAG 2.1 AA に準拠するため、以下の組み合わせはコントラスト比が 4.5:1 以上になるように設定することを推奨します。
+    - `colorCommonBackground` と `colorCommonText`
+    - `colorCommonBackground` と `colorKeyPrimary`
+    - `colorKeyBackground` と `colorOnKeyBackground`
+- `layoutColumns` は、セクションの内容を横に並べる列数を指定します。
 
 ## エディターの機能
 
