@@ -5,6 +5,7 @@ import { visit } from "unist-util-visit"
 const nodeNameToClassName: Record<string, string> = {
   row: "poster-content-row",
   column: "poster-content-column",
+  small: "poster-content-small",
 }
 
 export function remarkDirectiveDiv() {

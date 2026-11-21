@@ -47,6 +47,7 @@ const processor = remark()
           "poster-content",
           "poster-content-row",
           "poster-content-column",
+          "poster-content-small",
         ],
       ],
       img: [...(defaultSchema.attributes?.img || []), ["style"]],
