@@ -7,25 +7,39 @@ authors:
         - "所属1"
         - "所属2"
 style:
-    size: "A0"
-    primaryColor: "#8fc231"
-    secondaryColor: "#689f39"
-    backgroundColor: "white"
-    titleFontSize: "96px"
-    authorFontSize: "54px"
-    affiliationFontSize: "54px"
-    sectionTitleFontSize: "64px"
-    subsectionTitleFontSize: "36px"
-    contentFontSize: "24px"
-    framePadding: "64px 96px"
-    titlePadding: "48px"
-    authorAffiliationGap: "24px"
-    contentGap: "64px"
-    sectionTitlePadding: "36px 48px"
-    sectionContentPadding: "24px 48px"
-    titleContentGap: "48px"
-    listPadding: "0 0 8px 0"
-    numColumns: 2
+  # color
+  colorCommonBackground: "white"
+  colorCommonText: "black"
+  colorCommonBorder: "black"
+  colorKeyBackground: "#8fc231"
+  colorOnKeyBackground: "white"
+  colorKeyPrimary: "#689f39"
+
+  # font-size
+  fontSizeTitle: "96px"
+  fontSizeAuthor: "54px"
+  fontSizeAffiliation: "54px"
+  fontSizeSectionTitle: "64px"
+  fontSizeSubsectionTitle: "36px"
+  fontSizeContent: "24px"
+  fontSizeCaption: "16px"
+  fontSizeSmall: "12px"
+
+  # spacing
+  paddingFrame: "64px 96px"
+  paddingTitle: "48px"
+  paddingSectionTitle: "36px 48px"
+  paddingSectionContent: "24px 48px"
+  paddingList: "0 0 8px 0"
+  marginSubsectionTitle: "36px 0"
+  gapAuthorAffiliation: "24px"
+  gapContent: "64px"
+  gapTitleContent: "48px"
+
+  # layout
+  sizeWidth: "841mm"
+  sizeHeight: "1189mm"
+  layoutColumns: 2
 ---
 
 ## フロントマター
@@ -38,26 +52,26 @@ style:
 
 ### Authors
 
-著者をマップ形式で指定します。キーが著者名の文字列、値が所属の文字列かその配列、または、 `null` になります。 `null` や空文字列の場合は所属なしとして扱われます。同一の所属の著者が複数いる場合は、所属を同じ値にすることでまとめて表示されます。
-
-一名のみの場合は `author` を使って `author: 著者名` とすることができます。
+著者をマップ形式で指定します。キーが著者名の文字列、値が所属の文字列かその配列、または、 `null` になります。 `null` や空文字列の場合は所属なしとして扱われます。同一の所属の著者が複数いる場合は、所属を同じ値にすることでまとめて表示されます。一名のみの場合は `author` を使って `author: 著者名` とすることができます。
 
 ### Style
 
 スタイルを `style` にマップ形式で指定します。上記フロントマターではすべてのプロパティのデフォルト値を指定しています。
 
-- `size` は、ポスターのサイズを指定します。
+- `size` は、ポスターのサイズを指定します。以下の値に対応しています。
 
   - ISO Aシリーズの `A0` ~ `A10`
   - ISO Bシリーズの `B0` ~ `B10`
   - JIS Bシリーズの `JIS-B0` ~ `JIS-B10`
   - 北米サイズの `letter` 、 `legal` および `ledger`
-
-  に対応しています。
   
-  `size` の代わりに `width` と `height` を指定することもできます。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。重複して指定された場合は `size` が優先されます。
-- `*Color`, `*FontSize`, `*Padding`, `*Gap` は、それぞれ色、フォントサイズ、余白、要素間の隙間を指定します。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。
-- `numColumns` は、セクションの内容を横に並べる列数を指定します。
+  `size` の代わりに `sizeWidth` と `sizeHeight` を指定することもできます。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。重複して指定された場合は `size` が優先されます。
+- `color*`, `fontSize*`, `padding*`, `margin*`, `gap*` は、それぞれ色、フォントサイズ、内側余白、外側余白、要素間の隙間を指定します。これらは CSS に直接対応しており、CSS の値をそのまま指定できます。
+  - 色の指定について WCAG 2.1 AA に準拠するため、以下の組み合わせはコントラスト比が 4.5:1 以上になるように設定することを推奨します。
+    - `colorCommonBackground` と `colorCommonText`
+    - `colorCommonBackground` と `colorKeyPrimary`
+    - `colorKeyBackground` と `colorOnKeyBackground`
+- `layoutColumns` は、セクションの内容を横に並べる列数を指定します。
 
 ## エディターの機能
 
@@ -77,19 +91,11 @@ style:
 
 基本的には [Monaco Editor](https://microsoft.github.io/monaco-editor/) のキーマップに従います。以下は、追加で設定されているショートカットキーです。
 
-ローカルストレージ
-
 - `Ctrl + S` (`Cmd + S`): ローカルストレージに内容を保存します。
 - `Ctrl + O` (`Cmd + O`): ローカルストレージから内容を読み込みます。
 - `Ctrl + E` (`Cmd + E`): ローカルストレージの内容を削除します。
-
-マークダウンファイル保存
-
 - `Ctrl + Shift + S` (`Cmd + Shift + S`): マークダウンファイルを保存します。
 - `Ctrl + Shift + O` (`Cmd + Shift + O`): マークダウンファイルを読み込みます。
-
-エディター
-
 - `Ctrl + M` (`Cmd + M`): エディターの内容を削除します。
 
 ---
@@ -133,12 +139,7 @@ style:
 コードブロック
 
 ```python
-def main():
-    print("Hello, World!")
-
-
-if __name__ == "__main__":
-    main()
+print("Hello, World!")
 ```
 
 `print("Hello, World!")` はインラインコードです。
@@ -176,11 +177,11 @@ $f(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\righ
 
 ## 画像
 
-![説明文](https://poster.n-ha.jp/favicon.svg){height=128px, width=128px}
+![説明文](https://poster.n-ha.jp/favicon.svg){height=64px, width=64px}
 
-![絶対位置を指定した画像](https://poster.n-ha.jp/favicon.svg){right=128px, bottom=992px, height=128px, width=128px}
+![絶対位置を指定した画像](https://poster.n-ha.jp/favicon.svg){right=128px, bottom=960px, height=128px, width=128px}
 
-## 横並び
+## 横並びと小さい文字
 
 :::::row
 左の内容
@@ -199,4 +200,8 @@ $f(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\righ
 :::row
 ![左の画像](https://poster.n-ha.jp/favicon.svg){height=64px, width=64px}
 ![右の画像](https://poster.n-ha.jp/favicon.svg){height=64px, width=64px}
+:::
+
+:::small
+小さく表示されるテキストです。
 :::

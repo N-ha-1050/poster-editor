@@ -47,12 +47,47 @@ const posterStyleSizes = {
 type Size = keyof typeof posterStyleSizes
 
 export type PosterFrontmatterStyle = {
+  // color
+  colorCommonBackground?: string | null // ページ全体の背景（無彩色想定）
+  colorCommonText?: string | null // 本文の基本文字色（無彩色想定）
+  colorCommonBorder?: string | null // 本文の基本枠線色（無彩色想定）
+  colorKeyBackground?: string | null // 見出しボックスの背景色
+  colorOnKeyBackground?: string | null // colorKeyBackground 上の文字色
+  colorKeyPrimary?: string | null // 主色
+
+  // font-size
+  fontSizeTitle?: string | null
+  fontSizeAuthor?: string | null
+  fontSizeAffiliation?: string | null
+  fontSizeSectionTitle?: string | null
+  fontSizeSubsectionTitle?: string | null
+  fontSizeContent?: string | null
+  fontSizeCaption?: string | null
+  fontSizeSmall?: string | null
+
+  // spacing
+  paddingFrame?: string | null
+  paddingTitle?: string | null
+  paddingSectionTitle?: string | null
+  paddingSectionContent?: string | null
+  paddingList?: string | null
+  marginSubsectionTitle?: string | null
+  gapAuthorAffiliation?: string | null
+  gapContent?: string | null
+  gapTitleContent?: string | null
+
+  // layout
+  sizeWidth?: string | null
+  sizeHeight?: string | null
+  layoutColumns?: number | null
+  size?: Size | null
+
+  // deprecated
   width?: string | null
   height?: string | null
   primaryColor?: string | null
   secondaryColor?: string | null
   backgroundColor?: string | null
-  size?: Size | null
   titleFontSize?: string | null
   authorFontSize?: string | null
   affiliationFontSize?: string | null
@@ -71,66 +106,167 @@ export type PosterFrontmatterStyle = {
 }
 
 const DEFAULT_THEME_VARS = {
-  width: "841mm",
-  height: "1189mm",
-  primaryColor: "#8fc231",
-  secondaryColor: "#689f39",
-  backgroundColor: "white",
-  titleFontSize: "96px",
-  authorFontSize: "54px",
-  affiliationFontSize: "54px",
-  sectionTitleFontSize: "64px",
-  subsectionTitleFontSize: "36px",
-  contentFontSize: "24px",
-  framePadding: "64px 96px",
-  titlePadding: "48px",
-  authorAffiliationGap: "24px",
-  contentGap: "64px",
-  sectionTitlePadding: "36px 48px",
-  sectionContentPadding: "24px 48px",
-  titleContentGap: "48px",
-  listPadding: "0 0 8px 0",
-  numColumns: 2,
-}
+  // color
+  colorCommonBackground: "white",
+  colorCommonText: "black",
+  colorCommonBorder: "black",
+  colorKeyBackground: "#8fc231",
+  colorOnKeyBackground: "white",
+  colorKeyPrimary: "#689f39",
+
+  // font-size
+  fontSizeTitle: "96px",
+  fontSizeAuthor: "54px",
+  fontSizeAffiliation: "54px",
+  fontSizeSectionTitle: "64px",
+  fontSizeSubsectionTitle: "36px",
+  fontSizeContent: "24px",
+  fontSizeCaption: "16px",
+  fontSizeSmall: "12px",
+
+  // spacing
+  paddingFrame: "64px 96px",
+  paddingTitle: "48px",
+  paddingSectionTitle: "36px 48px",
+  paddingSectionContent: "24px 48px",
+  paddingList: "0 0 8px 0",
+  marginSubsectionTitle: "36px 0",
+  gapAuthorAffiliation: "24px",
+  gapContent: "64px",
+  gapTitleContent: "48px",
+
+  // layout
+  sizeWidth: "841mm",
+  sizeHeight: "1189mm",
+  layoutColumns: 2,
+} satisfies PosterFrontmatterStyle
 
 function resolveThemeVars(style?: PosterFrontmatterStyle | null) {
   const theme = {
-    width: style?.width ?? DEFAULT_THEME_VARS.width,
-    height: style?.height ?? DEFAULT_THEME_VARS.height,
-    primaryColor: style?.primaryColor ?? DEFAULT_THEME_VARS.primaryColor,
-    secondaryColor: style?.secondaryColor ?? DEFAULT_THEME_VARS.secondaryColor,
-    backgroundColor:
-      style?.backgroundColor ?? DEFAULT_THEME_VARS.backgroundColor,
-    titleFontSize: style?.titleFontSize ?? DEFAULT_THEME_VARS.titleFontSize,
-    authorFontSize: style?.authorFontSize ?? DEFAULT_THEME_VARS.authorFontSize,
-    affiliationFontSize:
-      style?.affiliationFontSize ?? DEFAULT_THEME_VARS.affiliationFontSize,
-    sectionTitleFontSize:
-      style?.sectionTitleFontSize ?? DEFAULT_THEME_VARS.sectionTitleFontSize,
-    subsectionTitleFontSize:
+    // color
+    colorCommonBackground:
+      style?.colorCommonBackground ??
+      // deprecated
+      style?.backgroundColor ??
+      DEFAULT_THEME_VARS.colorCommonBackground,
+    colorCommonText:
+      style?.colorCommonText ?? DEFAULT_THEME_VARS.colorCommonText,
+    colorCommonBorder:
+      style?.colorCommonBorder ?? DEFAULT_THEME_VARS.colorCommonBorder,
+    colorKeyBackground:
+      style?.colorKeyBackground ??
+      // deprecated
+      style?.primaryColor ??
+      DEFAULT_THEME_VARS.colorKeyBackground,
+    colorOnKeyBackground:
+      style?.colorOnKeyBackground ?? DEFAULT_THEME_VARS.colorOnKeyBackground,
+    colorKeyPrimary:
+      style?.colorKeyPrimary ??
+      // deprecated
+      style?.secondaryColor ??
+      DEFAULT_THEME_VARS.colorKeyPrimary,
+
+    // font-size
+    fontSizeTitle:
+      style?.fontSizeTitle ??
+      // deprecated
+      style?.titleFontSize ??
+      DEFAULT_THEME_VARS.fontSizeTitle,
+    fontSizeAuthor:
+      style?.fontSizeAuthor ??
+      // deprecated
+      style?.authorFontSize ??
+      DEFAULT_THEME_VARS.fontSizeAuthor,
+    fontSizeAffiliation:
+      style?.fontSizeAffiliation ??
+      // deprecated
+      style?.affiliationFontSize ??
+      DEFAULT_THEME_VARS.fontSizeAffiliation,
+    fontSizeSectionTitle:
+      style?.fontSizeSectionTitle ??
+      // deprecated
+      style?.sectionTitleFontSize ??
+      DEFAULT_THEME_VARS.fontSizeSectionTitle,
+    fontSizeSubsectionTitle:
+      style?.fontSizeSubsectionTitle ??
+      // deprecated
       style?.subsectionTitleFontSize ??
-      DEFAULT_THEME_VARS.subsectionTitleFontSize,
-    contentFontSize:
-      style?.contentFontSize ?? DEFAULT_THEME_VARS.contentFontSize,
-    framePadding: style?.framePadding ?? DEFAULT_THEME_VARS.framePadding,
-    titlePadding: style?.titlePadding ?? DEFAULT_THEME_VARS.titlePadding,
-    authorAffiliationGap:
-      style?.authorAffiliationGap ?? DEFAULT_THEME_VARS.authorAffiliationGap,
-    contentGap: style?.contentGap ?? DEFAULT_THEME_VARS.contentGap,
-    sectionTitlePadding:
-      style?.sectionTitlePadding ?? DEFAULT_THEME_VARS.sectionTitlePadding,
-    sectionContentPadding:
-      style?.sectionContentPadding ?? DEFAULT_THEME_VARS.sectionContentPadding,
-    titleContentGap:
-      style?.titleContentGap ?? DEFAULT_THEME_VARS.titleContentGap,
-    listPadding: style?.listPadding ?? DEFAULT_THEME_VARS.listPadding,
-    numColumns: style?.numColumns ?? DEFAULT_THEME_VARS.numColumns,
+      DEFAULT_THEME_VARS.fontSizeSubsectionTitle,
+    fontSizeContent:
+      style?.fontSizeContent ??
+      // deprecated
+      style?.contentFontSize ??
+      DEFAULT_THEME_VARS.fontSizeContent,
+    fontSizeCaption:
+      style?.fontSizeCaption ?? DEFAULT_THEME_VARS.fontSizeCaption,
+    fontSizeSmall: style?.fontSizeSmall ?? DEFAULT_THEME_VARS.fontSizeSmall,
+
+    // spacing
+    paddingFrame:
+      style?.paddingFrame ??
+      // deprecated
+      style?.framePadding ??
+      DEFAULT_THEME_VARS.paddingFrame,
+    paddingTitle:
+      style?.paddingTitle ??
+      // deprecated
+      style?.titlePadding ??
+      DEFAULT_THEME_VARS.paddingTitle,
+    paddingSectionTitle:
+      style?.paddingSectionTitle ??
+      // deprecated
+      style?.sectionTitlePadding ??
+      DEFAULT_THEME_VARS.paddingSectionTitle,
+    paddingSectionContent:
+      style?.paddingSectionContent ??
+      // deprecated
+      style?.sectionContentPadding ??
+      DEFAULT_THEME_VARS.paddingSectionContent,
+    paddingList:
+      style?.paddingList ??
+      // deprecated
+      style?.listPadding ??
+      DEFAULT_THEME_VARS.paddingList,
+    marginSubsectionTitle:
+      style?.marginSubsectionTitle ?? DEFAULT_THEME_VARS.marginSubsectionTitle,
+    gapAuthorAffiliation:
+      style?.gapAuthorAffiliation ??
+      // deprecated
+      style?.authorAffiliationGap ??
+      DEFAULT_THEME_VARS.gapAuthorAffiliation,
+    gapContent:
+      style?.gapContent ??
+      // deprecated
+      style?.contentGap ??
+      DEFAULT_THEME_VARS.gapContent,
+    gapTitleContent:
+      style?.gapTitleContent ??
+      // deprecated
+      style?.titleContentGap ??
+      DEFAULT_THEME_VARS.gapTitleContent,
+
+    // layout
+    sizeWidth:
+      style?.sizeWidth ??
+      // deprecated
+      style?.width ??
+      DEFAULT_THEME_VARS.sizeWidth,
+    sizeHeight:
+      style?.sizeHeight ??
+      // deprecated
+      style?.height ??
+      DEFAULT_THEME_VARS.sizeHeight,
+    layoutColumns:
+      style?.layoutColumns ??
+      // deprecated
+      style?.numColumns ??
+      DEFAULT_THEME_VARS.layoutColumns,
   }
   if (style?.size && style.size in posterStyleSizes) {
     const size = style.size
     const sizeTheme = posterStyleSizes[size]
-    theme.width = sizeTheme.width
-    theme.height = sizeTheme.height
+    theme.sizeWidth = sizeTheme.width
+    theme.sizeHeight = sizeTheme.height
   }
   return theme
 }
@@ -138,91 +274,105 @@ function resolveThemeVars(style?: PosterFrontmatterStyle | null) {
 export function buildPosterStyle(style?: PosterFrontmatterStyle | null) {
   const theme = resolveThemeVars(style)
   return `:root {
-  /* Size */
-  --width: ${theme.width};
-  --height: ${theme.height};
-
   /* Color */
-  --primary-color: ${theme.primaryColor};
-  --secondary-color: ${theme.secondaryColor};
-  --background-color: ${theme.backgroundColor};
+  --color-common-background: ${theme.colorCommonBackground};
+  --color-common-text: ${theme.colorCommonText};
+  --color-common-border: ${theme.colorCommonBorder};
+  --color-key-background: ${theme.colorKeyBackground};
+  --color-on-key-background: ${theme.colorOnKeyBackground};
+  --color-key-primary: ${theme.colorKeyPrimary};
 
   /* Fonts */
-  --font-sans: "Noto Sans", "Noto Sans JP", "Noto Sans Emoji", "Noto Sans Math", ui-sans-serif, sans-serif;
-  --font-serif: "Noto Serif", "Noto Serif JP", ui-serif, serif;
-  --font-mono: "Noto Mono", ui-monospace, monospace;
+  --font-sans: "Noto Sans", "Noto Sans JP", "Noto Color Emoji", "Noto Sans Math", ui-sans-serif, sans-serif;
+  --font-mono: "Noto Sans Mono", "Noto Sans JP", ui-monospace, monospace;
 
-  --title-font-size: ${theme.titleFontSize};
-  --author-font-size: ${theme.authorFontSize};
-  --affiliation-font-size: ${theme.affiliationFontSize};
-  --section-title-font-size: ${theme.sectionTitleFontSize};
-  --subsection-title-font-size: ${theme.subsectionTitleFontSize};
-  --content-font-size: ${theme.contentFontSize};
+  /* Font size */
+  --font-size-title: ${theme.fontSizeTitle};
+  --font-size-author: ${theme.fontSizeAuthor};
+  --font-size-affiliation: ${theme.fontSizeAffiliation};
+  --font-size-section-title: ${theme.fontSizeSectionTitle};
+  --font-size-subsection-title: ${theme.fontSizeSubsectionTitle};
+  --font-size-content: ${theme.fontSizeContent};
+  --font-size-caption: ${theme.fontSizeCaption};
+  --font-size-small: ${theme.fontSizeSmall};
 
-  --frame-padding: ${theme.framePadding};
-  --title-padding: ${theme.titlePadding};
-  --author-affiliation-gap: ${theme.authorAffiliationGap};
-  --content-gap: ${theme.contentGap};
-  --section-title-padding: ${theme.sectionTitlePadding};
-  --section-content-padding: ${theme.sectionContentPadding};
-  --title-content-gap: ${theme.titleContentGap};
-  --list-padding: ${theme.listPadding};
+  /* Spacing */
+  --padding-frame: ${theme.paddingFrame};
+  --padding-title: ${theme.paddingTitle};
+  --padding-section-title: ${theme.paddingSectionTitle};
+  --padding-section-content: ${theme.paddingSectionContent};
+  --padding-list: ${theme.paddingList};
+  --margin-subsection-title: ${theme.marginSubsectionTitle};
+  --gap-author-affiliation: ${theme.gapAuthorAffiliation};
+  --gap-content: ${theme.gapContent};
+  --gap-title-content: ${theme.gapTitleContent};
 
-  --num-columns: ${theme.numColumns};
+  /* Layout */
+  --size-width: ${theme.sizeWidth};
+  --size-height: ${theme.sizeHeight};
+  --layout-columns: ${theme.layoutColumns};
 }
 
 html {
-  width: var(--width);
-  height: var(--height);
+  width: var(--size-width);
+  height: var(--size-height);
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--color-common-background);
+  color: var(--color-common-text);
   font-family: var(--font-sans);
 
-  width: var(--width);
-  height: var(--height);
+  width: var(--size-width);
+  height: var(--size-height);
 
   margin: 0;
-  padding: var(--frame-padding);
+  padding: var(--padding-frame);
   box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
-  gap: var(--title-content-gap);
+  gap: var(--gap-title-content);
 
   position: relative;
 }
 
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
 header#poster-header {
-  background-color: var(--primary-color);
-  color: white;
-  padding: var(--title-padding);
+  background-color: var(--color-key-background);
+  color: var(--color-on-key-background);
+  padding: var(--padding-title);
   flex: 0 0 auto;
 }
 
 header#poster-header h1#poster-title {
   text-align: center;
-  font-size: var(--title-font-size);
+  font-size: var(--font-size-title);
   margin: 0;
-  margin-bottom: var(--title-padding);
+  margin-bottom: var(--padding-title);
 }
 
 header#poster-header div#poster-author {
   display: flex;
   justify-content: center;
-  gap: var(--author-affiliation-gap);
+  gap: var(--gap-author-affiliation);
 }
 
 header#poster-header div#poster-author p {
   margin: 0;
-  font-size: var(--author-font-size);
+  font-size: var(--font-size-author);
 }
 
 header#poster-header ol#poster-affiliation {
   display: flex;
   justify-content: center;
-  gap: var(--author-affiliation-gap);
+  gap: var(--gap-author-affiliation);
   list-style-position: inside;
   margin: 0;
   padding: 0;
@@ -230,7 +380,7 @@ header#poster-header ol#poster-affiliation {
 
 header#poster-header ol#poster-affiliation li {
   margin: 0;
-  font-size: var(--affiliation-font-size);
+  font-size: var(--font-size-affiliation);
 }
 
 main#poster-main {
@@ -240,39 +390,40 @@ main#poster-main {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  gap: var(--content-gap);
+  gap: var(--gap-content);
 }
 
 main#poster-main .poster-section {
-  width: calc((100% - (var(--num-columns) - 1) * var(--content-gap)) / var(--num-columns));
+  width: calc((100% - (var(--layout-columns) - 1) * var(--gap-content)) / var(--layout-columns));
 }
 
 main#poster-main .poster-section h2 {
-  color: white;
-  background-color: var(--primary-color);
-  padding: var(--section-title-padding);
-  font-size: var(--section-title-font-size);
+  color: var(--color-on-key-background);
+  background-color: var(--color-key-background);
+  padding: var(--padding-section-title);
+  font-size: var(--font-size-section-title);
   margin: 0;
 }
 
 main#poster-main .poster-section .poster-content {
-  padding: var(--section-content-padding);
+  padding: var(--padding-section-content);
+  font-size: var(--font-size-content);
 }
 
 main#poster-main .poster-section .poster-content p {
   margin: 0;
   text-align: justify;
-  font-size: var(--content-font-size);
 }
 
-main#poster-main .poster-section .poster-content p strong {
-  color: var(--secondary-color);
+main#poster-main .poster-section .poster-content strong {
+  color: var(--color-key-primary);
 }
 
 main#poster-main .poster-section .poster-content h3 {
-  color: var(--secondary-color);
-  font-size: var(--subsection-title-font-size);
+  color: var(--color-key-primary);
+  font-size: var(--font-size-subsection-title);
   font-weight: bold;
+  margin: var(--margin-subsection-title);
 }
 
 main#poster-main .poster-section .poster-content > h3:first-child {
@@ -282,35 +433,51 @@ main#poster-main .poster-section .poster-content > h3:first-child {
 main#poster-main .poster-section .poster-content table {
   width: 100%;
   margin: 24px 0;
-  border: 2px solid black;
+  border: 2px solid var(--color-common-border);
   border-width: 2px 0;
   border-collapse: collapse;
 }
 
 main#poster-main .poster-section .poster-content table th {
-  border-bottom: 1px solid black;
-}
-
-main#poster-main .poster-section .poster-content table th,
-main#poster-main .poster-section .poster-content table td {
-  font-size: var(--content-font-size);
+  border-bottom: 1px solid var(--color-common-border);
 }
 
 main#poster-main .poster-section .poster-content li {
-  font-size: var(--content-font-size);
-  padding: var(--list-padding);
+  padding: var(--padding-list);
 }
 
 main#poster-main .poster-section .poster-content li::marker {
-  color: var(--secondary-color);
+  color: var(--color-key-primary);
+}
+
+main#poster-main .poster-section .poster-content blockquote {
+  margin: 24px 0;
+  border-left: 8px solid var(--color-common-border);
+  padding: 8px 16px 8px 24px;
+}
+
+main#poster-main .poster-section .poster-content blockquote > :first-child {
+  margin-top: 0;
+}
+
+main#poster-main .poster-section .poster-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+main#poster-main .poster-section .poster-content figure figcaption {
+  font-size: var(--font-size-caption);
 }
 
 main#poster-main .poster-section .poster-content .poster-content-row {
   display: flex;
-  gap: var(--content-gap);
+  gap: var(--gap-content);
 }
 
 main#poster-main .poster-section .poster-content .poster-content-column {
   display: block;
+}
+
+main#poster-main .poster-section .poster-content .poster-content-small {
+  font-size: var(--font-size-small);
 }`
 }
